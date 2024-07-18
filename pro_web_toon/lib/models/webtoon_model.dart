@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class WebtoonModel {
   final int id;
@@ -27,49 +26,49 @@ class WebtoonModel {
     required this.status,
   });
 
-  factory WebtoonModel.fromMap(Map<String, dynamic> map) {
-    return WebtoonModel(
-      id: map['id'] as int,
-      title: map['title'] as String,
-      genre: map['genre'] as String,
-      description: map['description'] as String,
-      cover: map['cover'] as String,
-      creator: map['creator'] as String,
-      viewsCount: map['viewsCount'] as int,
-      createdAt: (map['createdAt'] as Timestamp).toDate(),
-      updatedAt: (map['updatedAt'] as Timestamp).toDate(),
-      updateDay: map['updateDay'] as int,
-      status: map['status'] as String,
-    );
-  }
+  // factory WebtoonModel.fromMap(Map<String, dynamic> map) {
+  //   return WebtoonModel(
+  //     id: map['id'] as int,
+  //     title: map['title'] as String,
+  //     genre: map['genre'] as String,
+  //     description: map['description'] as String,
+  //     cover: map['cover'] as String,
+  //     creator: map['creator'] as String,
+  //     viewsCount: map['viewsCount'] as int,
+  //     createdAt: (map['createdAt'] as Timestamp).toDate(),
+  //     updatedAt: (map['updatedAt'] as Timestamp).toDate(),
+  //     updateDay: map['updateDay'] as int,
+  //     status: map['status'] as String,
+  //   );
+  // }
 
-  Map<String, dynamic> toMap() {
-    final classMap = _createClassMap();
+  // Map<String, dynamic> toMap() {
+  //   final classMap = _createClassMap();
 
-    final Map<String, dynamic> map = {};
+  //   final Map<String, dynamic> map = {};
 
-    for (MapEntry<String, dynamic> entry in classMap.entries) {
-      if (entry.value != null) {
-        map[entry.key] = entry.value;
-      }
-    }
+  //   for (MapEntry<String, dynamic> entry in classMap.entries) {
+  //     if (entry.value != null) {
+  //       map[entry.key] = entry.value;
+  //     }
+  //   }
 
-    return map;
-  }
+  //   return map;
+  // }
 
-  Map<String, dynamic> _createClassMap() {
-    return {
-      'id': id,
-      'title': title,
-      'genre': genre,
-      'description': description,
-      'cover': cover,
-      'creator': creator,
-      'viewsCount': viewsCount,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'updatedAt': Timestamp.fromDate(updatedAt),
-      'updateDay': updateDay,
-      'status': status,
-    };
-  }
+  // Map<String, dynamic> _createClassMap() {
+  //   return {
+  //     'id': id,
+  //     'title': title,
+  //     'genre': genre,
+  //     'description': description,
+  //     'cover': cover,
+  //     'creator': creator,
+  //     'viewsCount': viewsCount,
+  //     'createdAt': Timestamp.fromDate(createdAt),
+  //     'updatedAt': Timestamp.fromDate(updatedAt),
+  //     'updateDay': updateDay,
+  //     'status': status,
+  //   };
+  // }
 }

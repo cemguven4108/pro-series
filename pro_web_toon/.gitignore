@@ -41,3 +41,18 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase specific files and directories
+**/android/app/google-services.json
+**/ios/Runner/GoogleService-Info.plist
+/android/app/src/debug/google-services.json
+/ios/Runner/DebugGoogleService-Info.plist
+
+/functions/node_modules
+/functions/.runtimeconfig.json
+
+/firebase.json
+/firebase-debug.log
+
+.env
+.env.local
