@@ -13,6 +13,8 @@ class HomeBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(audioPlayerProvider);
+
     return ListView.builder(
       itemCount: songs.length,
       itemExtent: 80,
@@ -24,24 +26,20 @@ class HomeBody extends ConsumerWidget {
             title: Text(song.title),
             subtitle: Text(song.artist),
             onTap: () {
-              ref.read(audioPlayerProvider.notifier).play(
-                    index: index,
-                  );
+              if (state.currentIndex != index) {
+                ref.read(audioPlayerProvider.notifier).togglePlay(
+                      index: index,
+                    );
+              }
             },
-            trailing: Consumer(
-              builder: (_, ref, ___) {
-                final state = ref.watch(audioPlayerProvider);
-
-                return IconButton(
-                  icon: state.isPlaying && state.currentIndex == index
-                      ? const Icon(Icons.pause)
-                      : const Icon(Icons.play_arrow),
-                  onPressed: () async {
-                    ref.read(audioPlayerProvider.notifier).togglePlay(
-                          index: index,
-                        );
-                  },
-                );
+            trailing: IconButton(
+              icon: state.isPlaying && state.currentIndex == index
+                  ? const Icon(Icons.pause)
+                  : const Icon(Icons.play_arrow),
+              onPressed: () async {
+                ref.read(audioPlayerProvider.notifier).togglePlay(
+                      index: index,
+                    );
               },
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pro_music_player/models/music_model.dart';
+import 'package:pro_music_player/pages/home/home_footer_body.dart';
 import 'package:pro_music_player/pages/home/home_footer_controls.dart';
 import 'package:pro_music_player/pages/home/home_footer_frame.dart';
 
@@ -16,56 +17,28 @@ class HomeFooter extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final size = MediaQuery.of(context).size;
-
     return Container(
-      height: kBottomNavigationBarHeight + 10,
-      width: size.width,
-      color: Colors.grey.shade900.withOpacity(1),
+      height: kBottomNavigationBarHeight,
+      width: double.infinity,
+      color: Colors.grey.shade900,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Align(
-            alignment: Alignment.centerLeft,
-            child: HomeFooterFrame(
-              id: song.id,
-            ),
+          HomeFooterFrame(
+            id: song.id,
           ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    song.title,
-                    overflow: TextOverflow.clip,
-                    maxLines: 1,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(
-                    song.artist,
-                    overflow: TextOverflow.clip,
-                    maxLines: 1,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+              child: HomeFooterBody(
+                title: song.title,
+                artist: song.artist,
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: HomeFooterControls(
-              index: index,
-            ),
+          HomeFooterControls(
+            index: index,
           )
         ],
       ),
