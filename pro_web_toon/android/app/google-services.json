@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "733857172101",
+    "project_id": "prowebtoondatabase",
+    "storage_bucket": "prowebtoondatabase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:733857172101:android:645578e7253800278a77ec",
+        "android_client_info": {
+          "package_name": "com.example.pro_web_toon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgBEUl31wUmbpNz_kXABhFqetm92247ak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
