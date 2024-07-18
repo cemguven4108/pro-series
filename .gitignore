@@ -54,4 +54,4 @@ app.*.map.json
 /firebase.json
 /firebase-debug.log
 
-./*.env
+*.env
