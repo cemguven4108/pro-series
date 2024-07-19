@@ -13,7 +13,20 @@ class HomeBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(audioPlayerProvider);
+    final isPlaying = ref.watch(audioPlayerProvider.select(
+      (value) => value.isPlaying,
+    ));
+    final currentIndex = ref.watch(audioPlayerProvider.select(
+      (value) => value.currentIndex,
+    ));
+
+    void handleOnTap(int? index) {
+      ref.read(audioPlayerProvider.notifier).togglePlay(
+            index: index,
+          );
+    }
+
+    print("HomeBody Building");
 
     return ListView.builder(
       itemCount: songs.length,
@@ -25,22 +38,12 @@ class HomeBody extends ConsumerWidget {
           child: ListTile(
             title: Text(song.title),
             subtitle: Text(song.artist),
-            onTap: () {
-              if (state.currentIndex != index) {
-                ref.read(audioPlayerProvider.notifier).togglePlay(
-                      index: index,
-                    );
-              }
-            },
+            onTap: () => handleOnTap(index),
             trailing: IconButton(
-              icon: state.isPlaying && state.currentIndex == index
+              icon: isPlaying && currentIndex == index
                   ? const Icon(Icons.pause)
                   : const Icon(Icons.play_arrow),
-              onPressed: () async {
-                ref.read(audioPlayerProvider.notifier).togglePlay(
-                      index: index,
-                    );
-              },
+              onPressed: () => handleOnTap(index),
             ),
           ),
         );

@@ -23,7 +23,7 @@ final audioPlayerProvider =
 
 class AudioPlayerNotifier extends StateNotifier<AudioPlayerState> {
   final AudioPlayer _audioPlayer;
-  final AsyncValue<List<MusicModel>> _songs;
+  final AsyncValue<List<MusicModel>> _songs;  
   final PreferencesService _preferencesService;
 
   AudioPlayerNotifier(
@@ -32,7 +32,9 @@ class AudioPlayerNotifier extends StateNotifier<AudioPlayerState> {
     this._preferencesService,
   ) : super(const AudioPlayerState()) {
     _initializePlayer(); // Initialize the audio player
-    _listenToIndex(); // Start listening to index changes
+    _listenToIndex(); // Listen to changes in the current index
+    _listenToPlaying();
+    _listenToPosition();
   }
 
   // Initialize the audio player and set the source
@@ -41,39 +43,17 @@ class AudioPlayerNotifier extends StateNotifier<AudioPlayerState> {
     final lastIndex = await _preferencesService.getLastIndex() ?? 0;
 
     // Set the audio source and initial index for the player
-    setSource(
+    await setSource(
       _songs.maybeWhen(
         data: (data) => data, // If songs are available, use them
         orElse: () => [], // Otherwise, use an empty list
       ),
       initialIndex: lastIndex,
     );
-
-    // Update the state with the last index
-    state = state.copyWith(
-      currentIndex: lastIndex,
-    );
-  }
-
-  // Play a song at a given index
-  void _play({int? index}) async {
-    if (index != null && index != _audioPlayer.currentIndex) {
-      // Seek to the beginning of the song if a new index is provided
-      await _audioPlayer.seek(Duration.zero, index: index);
-      state = state.copyWith(
-        currentIndex: index,
-        isPlaying: true,
-      );
-    } else {
-      state = state.copyWith(
-        isPlaying: true,
-      );
-    }
-    await _audioPlayer.play(); // Start playback
   }
 
   // Toggle play/pause based on current playback state
-  void togglePlay({int? index}) {
+  Future<void> togglePlay({int? index}) async {
     if (_audioPlayer.playing && index == _audioPlayer.currentIndex) {
       pause(); // Pause if currently playing
     } else {
@@ -81,18 +61,17 @@ class AudioPlayerNotifier extends StateNotifier<AudioPlayerState> {
     }
 
     // Update the state with the current playback status
-    state = state.copyWith(
-      isPlaying: _audioPlayer.playing,
-    );
   }
 
   // Pause playback
-  void pause() {
-    if (_audioPlayer.playing) _audioPlayer.pause(); // Only pause if playing
+  Future<void> pause() async {
+    if (_audioPlayer.playing) {
+      await _audioPlayer.pause(); // Only pause if playing
+    }
   }
 
   // Play the next song in the playlist
-  void next() async {
+  Future<void> next() async {
     if (_audioPlayer.hasNext) {
       await _audioPlayer.seekToNext(); // Move to the next song
       togglePlay(); // Start playing the next song
@@ -100,15 +79,23 @@ class AudioPlayerNotifier extends StateNotifier<AudioPlayerState> {
   }
 
   // Play the previous song in the playlist
-  void previous() async {
+  Future<void> previous() async {
     if (_audioPlayer.hasPrevious) {
       await _audioPlayer.seekToPrevious(); // Move to the previous song
       togglePlay(); // Start playing the previous song
     }
   }
 
+  Future<void> seek(Duration position) async {
+    // Seek to the given duration
+    await _audioPlayer.seek(
+      position,
+      index: _audioPlayer.currentIndex,
+    );
+  }
+
   // Set the audio source and optionally the initial index
-  void setSource(List<MusicModel> songs, {int? initialIndex}) async {
+  Future<void> setSource(List<MusicModel> songs, {int? initialIndex}) async {
     await _audioPlayer.setAudioSource(
       ConcatenatingAudioSource(
         children: songs
@@ -122,6 +109,16 @@ class AudioPlayerNotifier extends StateNotifier<AudioPlayerState> {
     );
   }
 
+  // Play a song at a given index
+  Future<void> _play({int? index}) async {
+    if (index != null && index != _audioPlayer.currentIndex) {
+      // Seek to the beginning of the song if a new index is provided
+      await _audioPlayer.seek(Duration.zero, index: index);
+    }
+
+    await _audioPlayer.play(); // Start playback
+  }
+
   // Listen to changes in the current index and update the state
   void _listenToIndex() {
     _audioPlayer.currentIndexStream.listen(
@@ -130,10 +127,38 @@ class AudioPlayerNotifier extends StateNotifier<AudioPlayerState> {
           // Update the state with the new index
           state = state.copyWith(
             currentIndex: index,
+            duration: _audioPlayer.duration ?? Duration.zero,
+            isPlaying: _audioPlayer.playing,
           );
           // Save the current index to preferences
           _preferencesService.saveLastIndex(index);
         }
+      },
+    );
+  }
+
+  void _listenToPlaying() {
+    _audioPlayer.playingStream.listen(
+      (isPlaying) {
+        state = state.copyWith(
+          isPlaying: isPlaying,
+          duration: _audioPlayer.duration ?? Duration.zero,
+        );
+      },
+    );
+  }
+
+  void _listenToPosition() {
+    _audioPlayer.positionStream.listen(
+      (position) {
+        if (state.duration == Duration.zero) {
+          return;
+        }
+        final value =
+            (position.inSeconds.toDouble() / state.duration.inSeconds) * 100;
+        state = state.copyWith(
+          position: value * 0.01,
+        );
       },
     );
   }

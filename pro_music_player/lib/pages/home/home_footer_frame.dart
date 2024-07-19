@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pro_music_player/widgets/artwork_widget.dart';
 
-class HomeFooterFrame extends StatelessWidget {
+class HomeFooterFrame extends ConsumerWidget {
   const HomeFooterFrame({
     super.key,
     required this.id,
@@ -10,12 +11,10 @@ class HomeFooterFrame extends StatelessWidget {
   final int id;
 
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+  Widget build(BuildContext context, WidgetRef ref) {
+    print("HomeFooterFrame Building");
 
     return Container(
-      height: kBottomNavigationBarHeight + 10,
-      width: size.width * 0.2,
       decoration: BoxDecoration(
         color: Colors.transparent,
         boxShadow: [
@@ -34,11 +33,8 @@ class HomeFooterFrame extends StatelessWidget {
         decoration: const BoxDecoration(
           color: Colors.black,
         ),
-        child: QueryArtworkWidget(
+        child: ArtworkWidget(
           id: id,
-          type: ArtworkType.AUDIO,
-          artworkBorder: BorderRadius.zero,
-          artworkFit: BoxFit.cover,
         ),
       ),
     );

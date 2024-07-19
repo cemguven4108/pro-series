@@ -4,9 +4,7 @@ import 'package:pro_music_player/pages/home/home_page.dart';
 import 'package:pro_music_player/permission_page.dart';
 import 'package:pro_music_player/providers/permission_provider.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
+void main() {
   runApp(
     const ProviderScope(
       child: MyApp(),

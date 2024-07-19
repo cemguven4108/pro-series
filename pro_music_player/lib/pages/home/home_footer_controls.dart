@@ -5,20 +5,22 @@ import 'package:pro_music_player/providers/audio_player_provider.dart';
 class HomeFooterControls extends ConsumerWidget {
   const HomeFooterControls({
     super.key,
-    required this.index,
   });
-
-  final int index;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isPlaying = ref.watch(audioPlayerProvider).isPlaying;
+    final isPlaying = ref.watch(audioPlayerProvider.select(
+      (value) => value.isPlaying,
+    ));
+
+    print("HomeFooterControls Building");
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         IconButton(
           onPressed: () {
+            final index = ref.read(audioPlayerProvider).currentIndex;
             ref.read(audioPlayerProvider.notifier).togglePlay(
                   index: index,
                 );
