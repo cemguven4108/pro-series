@@ -10,7 +10,7 @@ class CustomLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.red
+      ..color = Colors.white
       ..strokeWidth = 2;
 
     final start = Offset(0, size.height / 2);

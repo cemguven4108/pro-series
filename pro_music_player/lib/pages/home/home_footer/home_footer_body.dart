@@ -22,7 +22,7 @@ class HomeFooterBody extends StatelessWidget {
           maxLines: 1,
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 12,
+            fontSize: 11,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -31,7 +31,7 @@ class HomeFooterBody extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
           style: const TextStyle(
-            color: Colors.white,
+            color: Colors.white70,
             fontSize: 11,
             fontWeight: FontWeight.w500,
           ),

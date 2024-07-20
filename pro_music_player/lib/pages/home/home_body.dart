@@ -20,13 +20,11 @@ class HomeBody extends ConsumerWidget {
       (value) => value.currentIndex,
     ));
 
-    void handleOnTap(int? index) {
+    void handleOnTap(int index) {
       ref.read(audioPlayerProvider.notifier).togglePlay(
             index: index,
           );
     }
-
-    print("HomeBody Building");
 
     return ListView.builder(
       itemCount: songs.length,
@@ -35,6 +33,7 @@ class HomeBody extends ConsumerWidget {
         final song = songs[index];
 
         return Card(
+          color: Colors.grey.shade700,
           child: ListTile(
             title: Text(song.title),
             subtitle: Text(song.artist),

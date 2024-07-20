@@ -13,8 +13,6 @@ class HomeFooterControls extends ConsumerWidget {
       (value) => value.isPlaying,
     ));
 
-    print("HomeFooterControls Building");
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[

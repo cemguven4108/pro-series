@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pro_music_player/pages/home/home_page.dart';
-import 'package:pro_music_player/permission_page.dart';
+import 'package:pro_music_player/pages/permission/permission_page.dart';
 import 'package:pro_music_player/providers/permission_provider.dart';
 
 void main() {
