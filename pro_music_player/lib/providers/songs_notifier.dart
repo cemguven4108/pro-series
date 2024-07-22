@@ -23,4 +23,15 @@ class AsyncSongsNotifier extends _$AsyncSongsNotifier {
 
     return songsList;
   }
+
+  FutureOr<MusicModel?> getSongById(int id) async {
+    final song = state.maybeWhen(
+      data: (value) {
+        return value.firstWhere((element) => element.id == id);
+      },
+      orElse: () => null,
+    );
+
+    return song;
+  }
 }

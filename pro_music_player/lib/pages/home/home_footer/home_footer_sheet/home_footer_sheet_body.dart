@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HomeFooterBody extends StatelessWidget {
-  const HomeFooterBody({
+class HomeFooterSheetBody extends StatelessWidget {
+  const HomeFooterSheetBody({
     super.key,
     required this.title,
     required this.artist,

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pro_music_player/providers/audio_player_provider.dart';
 
-class HomeFooterControls extends ConsumerWidget {
-  const HomeFooterControls({
+class HomeFooterSheetControls extends ConsumerWidget {
+  const HomeFooterSheetControls({
     super.key,
   });
 

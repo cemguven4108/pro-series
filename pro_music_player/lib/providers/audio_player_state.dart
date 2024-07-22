@@ -14,11 +14,15 @@ class AudioPlayerState {
   // The current position of the currently playing track.
   final double position;
 
+  // The audio source of the currently playing track.
+  final Duration sourceDuration;
+
   const AudioPlayerState({
     this.isPlaying = false,
     this.currentIndex = 0,
     this.duration = Duration.zero,
     this.position = 0.0,
+    this.sourceDuration = Duration.zero,
   });
 
   // Creates a copy of this state with the given fields updated.
@@ -27,12 +31,14 @@ class AudioPlayerState {
     int? currentIndex,
     Duration? duration,
     double? position,
+    Duration? sourceDuration,
   }) {
     return AudioPlayerState(
       isPlaying: isPlaying ?? this.isPlaying,
       currentIndex: currentIndex ?? this.currentIndex,
       duration: duration ?? this.duration,
       position: position ?? this.position,
+      sourceDuration: sourceDuration ?? this.sourceDuration,
     );
   }
 
@@ -44,7 +50,8 @@ class AudioPlayerState {
         other.isPlaying == isPlaying &&
         other.currentIndex == currentIndex &&
         other.duration == duration &&
-        other.position == position;
+        other.position == position &&
+        other.sourceDuration == sourceDuration;
   }
 
   @override
@@ -52,5 +59,6 @@ class AudioPlayerState {
       isPlaying.hashCode ^
       currentIndex.hashCode ^
       duration.hashCode ^
-      position.hashCode;
+      position.hashCode ^
+      sourceDuration.hashCode;
 }

@@ -43,8 +43,11 @@ class AudioPlayerService {
     await _audioPlayer.seek(position, index: index);
   }
 
-  Future<void> setSource(List<MusicModel> songs, {int? initialIndex}) async {
-    await _audioPlayer.setAudioSource(
+  Future<Duration?> setSource(
+    List<MusicModel> songs, {
+    int? initialIndex,
+  }) async {
+    return await _audioPlayer.setAudioSource(
       ConcatenatingAudioSource(
         children: songs
             .map(

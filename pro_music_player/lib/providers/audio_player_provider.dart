@@ -44,7 +44,7 @@ class AudioPlayerNotifier extends StateNotifier<AudioPlayerState> {
     final lastIndex = await _preferencesService.getLastIndex() ?? 0;
 
     // Set the audio source and initial index for the player
-    await _audioPlayerService.setSource(
+    setSource(
       _songs.maybeWhen(
         data: (data) => data, // If songs are available, use them
         orElse: () => [], // Otherwise, use an empty list
@@ -56,8 +56,6 @@ class AudioPlayerNotifier extends StateNotifier<AudioPlayerState> {
   // Toggle play/pause based on current playback state
   Future<void> togglePlay({required int index}) async {
     _audioPlayerService.togglePlay(index: index);
-
-    // Update the state with the current playback status
   }
 
   // Play the next song in the playlist
@@ -75,10 +73,17 @@ class AudioPlayerNotifier extends StateNotifier<AudioPlayerState> {
   }
 
   // Set the audio source and optionally the initial index
-  void setSource(List<MusicModel> songs, {int? initialIndex}) async {
-    await _audioPlayerService.setSource(
+  Future<void> setSource(
+    List<MusicModel> songs, {
+    int? initialIndex,
+  }) async {
+    final duration = await _audioPlayerService.setSource(
       songs,
       initialIndex: initialIndex,
+    );
+
+    state = state.copyWith(
+      sourceDuration: duration ?? Duration.zero,
     );
   }
 

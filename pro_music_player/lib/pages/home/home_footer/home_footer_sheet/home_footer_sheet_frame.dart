@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class HomeFooterFrame extends StatelessWidget {
-  const HomeFooterFrame({
+class HomeFooterSheetFrame extends StatelessWidget {
+  const HomeFooterSheetFrame({
     super.key,
     required this.id,
   });

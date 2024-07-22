@@ -33,7 +33,7 @@ class HomeBody extends ConsumerWidget {
         final song = songs[index];
 
         return Card(
-          color: Colors.grey.shade700,
+          color: Colors.grey,
           child: ListTile(
             title: Text(song.title),
             subtitle: Text(song.artist),
