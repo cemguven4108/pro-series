@@ -5,7 +5,6 @@ import 'package:pro_music_player/pages/home/home_footer/home_footer_sheet/home_f
 import 'package:pro_music_player/pages/home/home_footer/home_footer_sheet/home_footer_sheet_frame.dart';
 import 'package:pro_music_player/providers/audio_player_provider.dart';
 import 'package:pro_music_player/providers/songs_notifier.dart';
-import 'package:pro_music_player/widgets/swipe_animation.dart';
 
 class HomeFooterSheet extends ConsumerStatefulWidget {
   const HomeFooterSheet({
@@ -38,13 +37,13 @@ class _HomeFooterSheetState extends ConsumerState<HomeFooterSheet>
               final songs = data;
 
               return Expanded(
-                child: SwipeAnimation(
-                  previous: () => ref
-                      .read(
-                        audioPlayerProvider.notifier,
-                      )
-                      .previous(),
-                  next: () => ref.read(audioPlayerProvider.notifier).next(),
+                child: Dismissible(
+                  key: ValueKey(songs[currentIndex].id),
+                  onDismissed: (direction) {
+                    direction == DismissDirection.endToStart
+                        ? ref.read(audioPlayerProvider.notifier).previous()
+                        : ref.read(audioPlayerProvider.notifier).next();
+                  },
                   child: Row(
                     children: <Widget>[
                       HomeFooterSheetFrame(
