@@ -55,3 +55,6 @@ app.*.map.json
 /firebase-debug.log
 
 *.env
+pro_web_toon/assets/
+
+pro_web_toon/lib/firebase_options.dart

@@ -65,21 +65,6 @@ class OriginalsAppBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        GestureDetector(
-          onTap: () {},
-          child: const Icon(
-            Icons.search_off,
-            color: Colors.white,
-          ),
-        ),
-        const SizedBox(width: 5),
-        GestureDetector(
-          onTap: () {},
-          child: const Icon(
-            Icons.search,
-            color: Colors.white,
-          ),
-        ),
       ],
     );
   }

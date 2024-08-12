@@ -1,15 +1,21 @@
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:pro_music_player/models/music_model.dart';
+import 'package:pro_music_player/models/preference_model.dart';
+import 'package:pro_music_player/services/preference_service.dart';
 
 class AudioPlayerService {
   final AudioPlayer _audioPlayer;
+  final PreferenceService _preferenceService;
 
   AudioPlayerService._private(
     this._audioPlayer,
+    this._preferenceService,
   );
 
   static final _instance = AudioPlayerService._private(
     AudioPlayer(),
+    PreferenceService(),
   );
 
   factory AudioPlayerService.instance() => _instance;
@@ -43,20 +49,39 @@ class AudioPlayerService {
     await _audioPlayer.seek(position, index: index);
   }
 
+  Future<void> stop() async {
+    await _audioPlayer.stop();
+  }
+
   Future<Duration?> setSource(
     List<MusicModel> songs, {
     int? initialIndex,
+    Duration? initialPosition,
   }) async {
-    return await _audioPlayer.setAudioSource(
+    final preference = await _preferenceService.getPlayerPreferences();
+
+    final duration = await _audioPlayer.setAudioSource(
+      initialIndex: preference.lastIndex ?? 0,
+      initialPosition: Duration(seconds: (preference.lastPosition?.toInt() ?? 0)),
       ConcatenatingAudioSource(
-        children: songs
-            .map(
-              (song) => AudioSource.uri(song.uri),
-            )
-            .toList(),
+        children: songs.map((song) {
+          return AudioSource.uri(
+            song.uri,
+            tag: MediaItem(
+              id: song.id.toString(),
+              title: song.title,
+              album: song.album,
+              artist: song.artist,
+              genre: song.genre,
+              duration: Duration(seconds: song.duration),
+              playable: true,
+            ),
+          );
+        }).toList(),
       ),
-      initialIndex: initialIndex,
     );
+
+    return duration;
   }
 
   Stream<int?> currentIndexStream() {
@@ -85,5 +110,15 @@ class AudioPlayerService {
     } else {
       await _audioPlayer.play();
     }
+  }
+
+  Future<void> dispose() async {
+    await _preferenceService.setPlayerPreferences(
+      PreferenceModel(
+        lastIndex: _audioPlayer.currentIndex,
+        lastPosition: _audioPlayer.position.inSeconds.toDouble(),
+      ),
+    );
+    await _audioPlayer.dispose();
   }
 }
