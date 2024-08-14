@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart' show Uint8List, immutable;
+import 'dart:typed_data';
+
 import 'package:on_audio_query/on_audio_query.dart';
 
-@immutable
 class MusicModel {
   final int id;
   final Uri uri;
@@ -12,7 +12,7 @@ class MusicModel {
   final int duration;
   final Uint8List? artwork;
 
-  const MusicModel({
+  MusicModel({
     required this.id,
     required this.uri,
     required this.title,

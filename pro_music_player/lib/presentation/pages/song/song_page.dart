@@ -1,61 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pro_music_player/models/music_model.dart';
-import 'package:pro_music_player/presentation/pages/song/song_page_app_bar.dart';
-import 'package:pro_music_player/presentation/pages/song/song_page_body.dart';
-import 'package:pro_music_player/presentation/state/providers/palette_generator_provider.dart';
+import 'package:pro_music_player/constants/app_size.dart';
+import 'package:pro_music_player/presentation/pages/song/song_app_bar.dart';
+import 'package:pro_music_player/presentation/pages/song/song_background.dart';
+import 'package:pro_music_player/presentation/pages/song/song_carousel.dart';
+import 'package:pro_music_player/presentation/pages/song/song_controls.dart';
+import 'package:pro_music_player/presentation/pages/song/song_details.dart';
 
 class SongPage extends ConsumerWidget {
   const SongPage({
     super.key,
-    required this.song,
   });
-
-  final MusicModel song;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final paletteColor = ref.watch(paletteGeneratorProvider);
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
+      extendBody: true,
       extendBodyBehindAppBar: true,
-      body: paletteColor.maybeWhen(
-        data: (color) => buildSongPage(color),
-        orElse: () => buildSongPage(Colors.grey.shade700),
-      ),
-    );
-  }
-
-  Widget buildSongPage(Color color) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            color,
-            Colors.black.withOpacity(0.5),
-          ],
-        ),
-      ),
-      alignment: Alignment.topCenter,
-      child: Container(
-        margin: const EdgeInsets.only(top: kToolbarHeight / 2),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const SongPageAppBar(),
-            SongPageBody(song: song),
-            const Spacer(),
-            Container(
-              height: kBottomNavigationBarHeight,
-              width: double.infinity,
-              color: Colors.grey,
-              child: const Center(child: Text("sliders")),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          const SongBackground(),
+          const Positioned(
+            top: AppSize.songAppBarHeight,
+            left: 0,
+            right: 0,
+            child: SongAppBar(),
+          ),
+          Positioned(
+            top: AppSize.songAppBarHeight + (size.height * 0.1),
+            left: 25,
+            right: 25,
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SongCarousel(),
+                SizedBox(height: 20),
+                SongDetails(),
+                SizedBox(height: 20),
+                SongControls(),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

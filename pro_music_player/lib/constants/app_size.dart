@@ -1,8 +1,10 @@
-const double homeBottomHeight = 120.0;
+import 'package:flutter/material.dart';
 
 class AppSize {
   static const homeTileFrameHeight = 50.0;
   static const homeTileFrameWidth = 50.0;
+
+  static const songAppBarHeight = kToolbarHeight - 20;
 
   static const appExtraLargeBorderRadius = 12.0;
   static const appLargeBorderRadius = 8.0;
